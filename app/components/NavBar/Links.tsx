@@ -2,6 +2,7 @@ import { useUser } from "@/packages/zustand/hooks";
 import { Button, Link, NavbarContent, Skeleton } from "@nextui-org/react";
 import { Cart } from "./icons";
 import NextLink from "next/link";
+import { AvatarDropdown } from "./AvatarDropdown";
 
 export const Links = () => {
   const { user, isLoading } = useUser();
@@ -19,6 +20,7 @@ export const Links = () => {
     return (
       <NavbarContent justify="end">
         <Cart height={30} width={30} />
+        <AvatarDropdown />
       </NavbarContent>
     );
   }
