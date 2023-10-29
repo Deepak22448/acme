@@ -2,9 +2,9 @@ import { Tables } from "@/packages/supabase/types/database.types";
 import { Card, CardFooter } from "@nextui-org/card";
 import { FC } from "react";
 import { FormattedPrice } from "@/utils/FormattedPrice";
-import { Button } from "@nextui-org/button";
 import Link from "next/link";
 import Image from "next/image";
+import { APP_Routs } from "@/CONSTANTS";
 
 interface Props {
   data: Tables<"Product"> & {
@@ -12,10 +12,10 @@ interface Props {
   };
 }
 export const PorductCard: FC<Props> = ({ data }) => {
-  const { imgUrl, price, name, ProductSizeStock: sizes } = data;
+  const { imgUrl, price, name, ProductSizeStock: sizes, id } = data;
 
   return (
-    <Link href="#">
+    <Link href={`${APP_Routs.PRODUCTS}/${id}`}>
       <Card radius="none">
         <div className="w-full aspect-square relative my-4">
           <Image

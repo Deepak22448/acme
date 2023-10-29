@@ -4,6 +4,7 @@ export enum API_Routs {
 
 export enum APP_Routs {
   SIGNUP = "/signup",
+  PRODUCTS = "/products",
 }
 
 export const BaseURL = "http://localhost:3000";

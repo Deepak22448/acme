@@ -18,7 +18,7 @@ export const Offers = () => {
             <span className="p-2 border-3 border-purple-200 px-2">GETLIT</span>
           </h2>
         </div>
-        <Link href="/collections">
+        <Link href="/products">
           <Button color="secondary" variant="faded">
             SHOP THE COLLECTION
           </Button>
