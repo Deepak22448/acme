@@ -7,8 +7,9 @@ import { ActionButtons } from "./ActionButtons";
 
 type Props = Pick<Tables<"Product">, "name" | "price"> & {
   sizes: Pick<Tables<"ProductSizeStock">, "size">[];
+  id: Tables<"Product">["id"];
 };
-export const ProductInfo: FC<Props> = ({ name, price, sizes }) => {
+export const ProductInfo: FC<Props> = ({ name, price, sizes, id }) => {
   return (
     <div className="text-center sm:text-start sm:w-1/2">
       <h2 className="uppercase tracking-wider font-extrabold text-xl sm:text-lg md:text-2xl line-clamp-1">
@@ -22,7 +23,8 @@ export const ProductInfo: FC<Props> = ({ name, price, sizes }) => {
         <span>{"(Incl. All taxes)"}</span>
       </div>
       <Sizes sizes={sizes} />
-      <ActionButtons />
+      <ActionButtons id={id} size={sizes[0].size} />
+
       <SizesChartTable />
     </div>
   );

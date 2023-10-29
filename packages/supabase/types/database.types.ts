@@ -9,6 +9,46 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      CartItem: {
+        Row: {
+          created_at: string;
+          id: string;
+          productId: string;
+          quantity: number;
+          size: Database["public"]["Enums"]["Size"];
+          userId: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          productId: string;
+          quantity: number;
+          size: Database["public"]["Enums"]["Size"];
+          userId: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          productId?: string;
+          quantity?: number;
+          size?: Database["public"]["Enums"]["Size"];
+          userId?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "CartItem_productId_fkey";
+            columns: ["productId"];
+            referencedRelation: "Product";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "CartItem_userId_fkey";
+            columns: ["userId"];
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
       Product: {
         Row: {
           created_at: string;

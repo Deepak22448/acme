@@ -18,12 +18,12 @@ const ProductPage = async ({ params: { id } }: Params) => {
     .eq("id", id);
 
   if (!data) return notFound();
-  const { name, imgUrl, price, ProductSizeStock: sizes } = data[0];
 
+  const { name, imgUrl, price, ProductSizeStock: sizes } = data[0];
   return (
     <section className="h-min w-full sm:flex px-2 sm:px-6 lg:px-8 my-2 sm:py-10 sm:gap-x-5 md:gap-x-7 lg:gap-x-3 mb-8 sm:mb-12">
       <ProductPricture imgUrl={imgUrl} name={name} />
-      <ProductInfo name={name} price={price} sizes={sizes} />
+      <ProductInfo name={name} price={price} sizes={sizes} id={id} />
     </section>
   );
 };
