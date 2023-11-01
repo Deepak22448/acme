@@ -3,6 +3,7 @@ import { Button, Link, NavbarContent, Skeleton } from "@nextui-org/react";
 import { Cart } from "./icons";
 import NextLink from "next/link";
 import { AvatarDropdown } from "./AvatarDropdown";
+import { APP_Routs } from "@/CONSTANTS";
 
 export const Links = () => {
   const { user, isLoading } = useUser();
@@ -10,8 +11,8 @@ export const Links = () => {
   if (isLoading) {
     return (
       <NavbarContent justify="end">
-        <Skeleton className="h-8 w-12" />
-        <Skeleton className="h-8 w-12" />
+        <Skeleton className="h-8 w-12 rounded" />
+        <Skeleton className="h-8 w-12 rounded" />
       </NavbarContent>
     );
   }
@@ -19,7 +20,9 @@ export const Links = () => {
   if (user) {
     return (
       <NavbarContent justify="end">
-        <Cart height={30} width={30} />
+        <NextLink href={`${APP_Routs.CART}`}>
+          <Cart height={30} width={30} />
+        </NextLink>
         <AvatarDropdown />
       </NavbarContent>
     );

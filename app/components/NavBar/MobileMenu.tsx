@@ -19,15 +19,13 @@ export const MobileMenu: FC<Props> = ({ clonseMenu }) => {
     <NavbarMenu>
       {NAV_LINKS.map(({ text }, index) => (
         <NavbarMenuItem key={`${index}`}>
-          <Link
-            as={NextLink}
+          <NextLink
             className="w-full capitalize"
-            href={text}
+            href={`/${text}`}
             onClick={clonseMenu}
-            color="secondary"
           >
             {text}
-          </Link>
+          </NextLink>
         </NavbarMenuItem>
       ))}
       <NavbarMenuItem key="switch-theme">
