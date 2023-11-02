@@ -29,7 +29,7 @@ export const useSignup = () => {
 
     setIsSigningIn(true);
     try {
-      await fetch(`${BaseURL}${API_Routs.SIGNUP}`, {
+      await fetch(API_Routs.SIGNUP, {
         method: "POST",
         body: JSON.stringify(signupInfo),
       });
