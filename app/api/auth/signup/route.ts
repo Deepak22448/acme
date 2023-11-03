@@ -7,8 +7,9 @@ import { SignupErrors } from "./CONSTANTS";
 
 export async function POST(request: NextRequest) {
   try {
+    const requestUrl = new URL(request.url);
     const { email, password } = (await request.json()) as SignupInfo;
-    await signUpUser(email, password, cookies);
+    await signUpUser(email, password, requestUrl, cookies);
 
     return NextResponse.json({ message: "Signup Successfull." });
   } catch (error) {

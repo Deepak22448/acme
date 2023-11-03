@@ -4,6 +4,7 @@ import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adap
 export async function signUpUser(
   email: string,
   password: string,
+  requestUrl: URL,
   cookies: () => ReadonlyRequestCookies
 ) {
   const supabase = serverClient(cookies);
@@ -14,6 +15,9 @@ export async function signUpUser(
   } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      emailRedirectTo: `${requestUrl.origin}/api/auth/confirm`,
+    },
   });
 
   if (error?.message) {
