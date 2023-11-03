@@ -7,7 +7,6 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
-  const next = searchParams.get("next") ?? "/";
 
   if (token_hash && type) {
     const supabase = serverClient(cookies);
@@ -17,6 +16,6 @@ export async function GET(request: Request) {
       token_hash,
     });
 
-    return NextResponse.redirect(new URL(`/${next.slice(1)}`, request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 }
