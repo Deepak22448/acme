@@ -35,11 +35,13 @@ export const useSignup = () => {
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
       );
 
-      const { error } = await supabase.auth.signUp({
+      const { error, data } = await supabase.auth.signUp({
         email: signupInfo.email,
         password: signupInfo.password,
       });
       if (error) throw new Error(error.message);
+      if (data?.user?.identities?.length === 0)
+        throw new Error("This user already exists");
 
       router.push("/");
       toast.success("Verification link sent. Please check your email.");
