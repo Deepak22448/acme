@@ -1,4 +1,5 @@
 import { API_Routs, BaseURL } from "@/CONSTANTS";
+import { createBrowserClient } from "@supabase/ssr";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { toast } from "react-toastify";
@@ -29,10 +30,17 @@ export const useSignup = () => {
 
     setIsSigningIn(true);
     try {
-      await fetch(API_Routs.SIGNUP, {
-        method: "POST",
-        body: JSON.stringify(signupInfo),
+      const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      );
+
+      const { error } = await supabase.auth.signUp({
+        email: signupInfo.email,
+        password: signupInfo.password,
       });
+      if (error) throw new Error(error.message);
+
       router.push("/");
       toast.success("Verification link sent. Please check your email.");
     } catch (error: any) {

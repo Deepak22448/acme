@@ -1,6 +1,4 @@
-export enum API_Routs {
-  SIGNUP = "/api/auth/signup",
-}
+export enum API_Routs {}
 
 export enum APP_Routs {
   SIGNUP = "/signup",
