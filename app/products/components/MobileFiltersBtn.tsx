@@ -17,7 +17,7 @@ const MobileFiltersBtn = () => {
   return (
     <>
       <div
-        className="lg:hidden fixed bottom-4 z-10 right-4 dark:bg-white bg-black rounded"
+        className="lg:hidden fixed bottom-4 z-10 right-4 dark:bg-white bg-black rounded cursor-pointer"
         onClick={onOpen}
       >
         <Filter width={50} height={50} />

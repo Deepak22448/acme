@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { PorductCard } from "../components/PorductCard";
 import { Tables } from "@/packages/supabase/types/database.types";
 import { sizes } from "../components/hooks/useFiltersAccordian";
+import NoItemsFound from "../components/NoItemsFound";
 
 interface SearchParams {
   size?: Tables<"ProductSizeStock">["size"];
@@ -15,8 +16,11 @@ interface Props {
 const ProductsPage = async ({ searchParams }: Props) => {
   const { data } = await fetchProducts(searchParams);
 
+  if (!data?.length) {
+    return <NoItemsFound />;
+  }
   return (
-    <section className="relative grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 my-10 mx-4 sm:mx-6 md:mx-8">
+    <section className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 my-10 mx-4 sm:mx-6 md:mx-8">
       {data?.map((product) => (
         <PorductCard key={product.id} data={product} />
       ))}
