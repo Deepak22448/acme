@@ -4,6 +4,7 @@ export enum APP_Routs {
   SIGNUP = "/signup",
   PRODUCTS = "/products",
   CART = "/cart",
+  LOGIN = "/login",
 }
 
 export const DEFAULT_DELIVERY_CHARGES = 40;
