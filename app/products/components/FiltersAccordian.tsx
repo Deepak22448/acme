@@ -61,6 +61,7 @@ export const FiltersAccordian = () => {
               isSelected={isSelected}
               className="block capitalize"
               color="secondary"
+              defaultChecked={isSelected}
               onValueChange={(e) => handlePriceChange(e, value)}
               classNames={{
                 label: "text-sm text-black dark:text-white",
