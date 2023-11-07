@@ -1,13 +1,16 @@
 "use client";
 import { Accordion, AccordionItem, Checkbox } from "@nextui-org/react";
-import useFiltersAccordian, {
-  sizes,
-  sortPriceRanges,
-} from "./hooks/useFiltersAccordian";
+import useFiltersAccordian from "./hooks/useFiltersAccordian";
+import { sizes, sortPriceRanges } from "@/CONSTANTS";
 
 export const FiltersAccordian = () => {
-  const { handlePriceChange, handleSizeChange, searchParams } =
-    useFiltersAccordian();
+  const {
+    handlePriceChange,
+    handleSizeChange,
+    searchParams,
+    selectedPriceRange,
+    selectedSize,
+  } = useFiltersAccordian();
 
   return (
     <Accordion selectionMode="multiple" defaultSelectedKeys="all">
@@ -23,9 +26,12 @@ export const FiltersAccordian = () => {
               radius="none"
               key={size}
               value={size}
+              type="radio"
+              name="size"
               className="block"
               color="secondary"
-              isSelected={searchParams.get("size") === size}
+              isSelected={size === selectedSize}
+              defaultSelected={searchParams.get("size") === size}
               onValueChange={(e) => handleSizeChange(e, size)}
               classNames={{
                 label: "text-sm text-black dark:text-white",
@@ -43,7 +49,10 @@ export const FiltersAccordian = () => {
         classNames={{ title: "text-sm text-black dark:text-white" }}
       >
         {sortPriceRanges.map(({ text, value }) => {
-          const isSelected = searchParams.get("min") === value.split("-")[0];
+          const isSelected =
+            selectedPriceRange.min === Number(value.split("-")[0]) &&
+            selectedPriceRange.max !== 0;
+
           return (
             <Checkbox
               radius="none"

@@ -1,17 +1,27 @@
+"use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 const useFiltersAccordian = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const [selectedSize, setSelectedSize] = useState(() =>
+    searchParams.get("size")
+  );
+  const [selectedPriceRange, setSelectedPriceRange] = useState({
+    min: 0,
+    max: 0,
+  });
 
   const handleSizeChange = useCallback(
     (checked: boolean, size: string) => {
       const params = new URLSearchParams(searchParams);
       if (checked) {
+        setSelectedSize(size);
         params.set("size", size);
       } else {
+        setSelectedSize(null);
         params.delete("size");
       }
       router.replace(`${pathname}?${params.toString()}`);
@@ -24,9 +34,14 @@ const useFiltersAccordian = () => {
     const params = new URLSearchParams(searchParams);
 
     if (checked) {
+      setSelectedPriceRange({
+        min: Number(min),
+        max: Number(max),
+      });
       params.set("min", min);
       params.set("max", max);
     } else {
+      setSelectedPriceRange({ min: 0, max: 0 });
       params.delete("min");
       params.delete("max");
     }
@@ -37,27 +52,9 @@ const useFiltersAccordian = () => {
     handlePriceChange,
     handleSizeChange,
     searchParams,
+    selectedPriceRange,
+    selectedSize,
   };
 };
-
-export const sizes = ["S", "M", "L", "XL", "XXL"];
-export const sortPriceRanges = [
-  {
-    text: "under 999",
-    value: "0-999",
-  },
-  {
-    text: "Rs. 999 - Rs. 1,499",
-    value: "999-1499",
-  },
-  {
-    text: "1,499 - Rs. 1,999",
-    value: "1499-1999",
-  },
-  {
-    text: "Above Rs. 1,999",
-    value: "1999",
-  },
-];
 
 export default useFiltersAccordian;

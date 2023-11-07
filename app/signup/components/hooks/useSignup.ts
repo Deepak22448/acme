@@ -1,4 +1,4 @@
-import { API_Routs, BaseURL } from "@/CONSTANTS";
+import { API_Routs } from "@/CONSTANTS";
 import { createBrowserClient } from "@supabase/ssr";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";

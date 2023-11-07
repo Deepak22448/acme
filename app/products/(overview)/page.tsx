@@ -2,8 +2,8 @@ import serverClient from "@/packages/supabase/server-client";
 import { cookies } from "next/headers";
 import { PorductCard } from "../components/PorductCard";
 import { Tables } from "@/packages/supabase/types/database.types";
-import { sizes } from "../components/hooks/useFiltersAccordian";
 import NoItemsFound from "../components/NoItemsFound";
+import { sizes } from "@/CONSTANTS";
 
 interface SearchParams {
   size?: Tables<"ProductSizeStock">["size"];
