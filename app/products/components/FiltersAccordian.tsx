@@ -8,14 +8,14 @@ export const FiltersAccordian = () => {
     handlePriceChange,
     handleSizeChange,
     searchParams,
-    selectedPriceRange,
+    selectedPriceRangeIndex,
     selectedSize,
   } = useFiltersAccordian();
 
   return (
     <Accordion selectionMode="multiple" defaultSelectedKeys="all">
       <AccordionItem
-        key="1"
+        key="sizes-item"
         aria-label="size"
         title="Size"
         classNames={{ title: "text-sm text-black dark:text-white" }}
@@ -26,7 +26,6 @@ export const FiltersAccordian = () => {
               radius="none"
               key={size}
               value={size}
-              type="radio"
               name="size"
               className="block"
               color="secondary"
@@ -43,26 +42,26 @@ export const FiltersAccordian = () => {
         })}
       </AccordionItem>
       <AccordionItem
-        key="2"
+        key="price-item"
         aria-label="price"
         title="Price"
         classNames={{ title: "text-sm text-black dark:text-white" }}
       >
-        {sortPriceRanges.map(({ text, value }) => {
-          const isSelected =
-            selectedPriceRange.min === Number(value.split("-")[0]) &&
-            selectedPriceRange.max !== 0;
-
+        {sortPriceRanges.map(({ text, value }, i) => {
           return (
             <Checkbox
               radius="none"
               key={value}
               value={value}
-              isSelected={isSelected}
-              className="block capitalize"
+              name="price"
+              className="block"
               color="secondary"
-              defaultChecked={isSelected}
-              onValueChange={(e) => handlePriceChange(e, value)}
+              isSelected={
+                i === selectedPriceRangeIndex ||
+                searchParams.get("min") === value.split("-")[0]
+              }
+              defaultSelected={searchParams.get("min") === value.split("-")[0]}
+              onValueChange={(e) => handlePriceChange(e, value, i)}
               classNames={{
                 label: "text-sm text-black dark:text-white",
               }}

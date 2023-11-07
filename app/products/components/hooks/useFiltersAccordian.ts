@@ -9,10 +9,9 @@ const useFiltersAccordian = () => {
   const [selectedSize, setSelectedSize] = useState(() =>
     searchParams.get("size")
   );
-  const [selectedPriceRange, setSelectedPriceRange] = useState({
-    min: 0,
-    max: 0,
-  });
+  const [selectedPriceRangeIndex, setSelectedPriceRangeIndex] = useState<
+    undefined | number
+  >(undefined);
 
   const handleSizeChange = useCallback(
     (checked: boolean, size: string) => {
@@ -29,30 +28,30 @@ const useFiltersAccordian = () => {
     [pathname, router, searchParams]
   );
 
-  const handlePriceChange = (checked: boolean, range: string) => {
-    const [min, max] = range.split("-");
-    const params = new URLSearchParams(searchParams);
+  const handlePriceChange = useCallback(
+    (checked: boolean, range: string, index: number) => {
+      const [min, max] = range.split("-");
+      const params = new URLSearchParams(searchParams);
 
-    if (checked) {
-      setSelectedPriceRange({
-        min: Number(min),
-        max: Number(max),
-      });
-      params.set("min", min);
-      params.set("max", max);
-    } else {
-      setSelectedPriceRange({ min: 0, max: 0 });
-      params.delete("min");
-      params.delete("max");
-    }
-    router.replace(`${pathname}?${params.toString()}`);
-  };
+      if (checked) {
+        setSelectedPriceRangeIndex(index);
+        params.set("min", min);
+        params.set("max", max);
+      } else {
+        setSelectedPriceRangeIndex(undefined);
+        params.delete("min");
+        params.delete("max");
+      }
+      router.replace(`${pathname}?${params.toString()}`);
+    },
+    [pathname, router, searchParams]
+  );
 
   return {
     handlePriceChange,
     handleSizeChange,
     searchParams,
-    selectedPriceRange,
+    selectedPriceRangeIndex,
     selectedSize,
   };
 };
