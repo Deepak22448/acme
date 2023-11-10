@@ -1,7 +1,8 @@
 import { DEFAULT_DELIVERY_CHARGES } from "@/CONSTANTS";
 import { useCart } from "@/packages/zustand/hooks";
 import { FormattedPrice } from "@/utils/FormattedPrice";
-import { Card, CardBody } from "@nextui-org/react";
+import { Button, Card, CardBody } from "@nextui-org/react";
+import Link from "next/link";
 import { useMemo } from "react";
 
 export const BillDetails = () => {
@@ -38,10 +39,13 @@ export const BillDetails = () => {
           </div>
         </div>
 
-        <div className="flex justify-between border-y border-dotted py-5">
+        <div className="flex justify-between border-y border-dotted py-5 my-3">
           <h4 className="text-lg sm:text-xl font-bold">Total Amount</h4>
           <FormattedPrice price={totalPrice} />
         </div>
+        <Button color="success" variant="flat" as={Link} href="/payment">
+          Pay Now
+        </Button>
       </CardBody>
     </Card>
   );

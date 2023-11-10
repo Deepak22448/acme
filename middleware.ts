@@ -12,7 +12,7 @@ const getUser = async (request: NextRequest, response: NextResponse) => {
 };
 
 const isRouteRestricted = async (req: NextRequest, user: User | undefined) => {
-  const authRoutes = ["/cart"];
+  const authRoutes = ["/cart", "/payment"];
   const nonAuthRoutes = ["/login", "/signup"];
 
   const pathName = req.nextUrl.pathname;
