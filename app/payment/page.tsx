@@ -1,44 +1,61 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import {
-  EmbeddedCheckoutProvider,
-  EmbeddedCheckout,
-} from "@stripe/react-stripe-js";
-import { useCart } from "@/packages/zustand/hooks";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { EmbeddedPayment } from "./components/EmbeddedPayment";
+import serverClient from "@/packages/supabase/server-client";
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-);
+import Stripe from "stripe";
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-export default function App() {
-  const [clientSecret, setClientSecret] = useState("");
-  const router = useRouter();
-  const { cartItems, setCartItems } = useCart();
+export default async function Payment() {
+  const [user, { data: cartItems }] = await Promise.all([
+    getUser(),
+    getCartItems(),
+  ]);
 
-  useEffect(() => {
-    if (!cartItems.length) router.push("/cart");
-  }, [cartItems, router]);
+  if (!user || !cartItems?.length) {
+    return redirect("/");
+  }
 
-  useEffect(() => {
-    fetch("/api/checkout_sessions", {
-      method: "POST",
-    })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
-  }, []);
+  const paymentIntent = await stripe.checkout.sessions.create({
+    customer_email: user.email,
+    line_items: cartItems.map(({ Product, quantity }) => ({
+      price_data: {
+        currency: "INR",
+        product_data: {
+          name: Product?.name!,
+          images: [Product?.imgUrl!],
+        },
+        unit_amount: Product?.price! * 100,
+      },
+      quantity: quantity,
+    })),
 
+    shipping_address_collection: {
+      allowed_countries: ["IN"],
+    },
+    mode: "payment",
+    ui_mode: "embedded",
+    return_url: "https://acme-topaz.vercel.app/products",
+  });
   return (
     <div id="checkout">
-      {clientSecret && (
-        <EmbeddedCheckoutProvider
-          stripe={stripePromise}
-          options={{ clientSecret }}
-        >
-          <EmbeddedCheckout className="h-screen" />
-        </EmbeddedCheckoutProvider>
-      )}
+      <EmbeddedPayment clientSecret={paymentIntent.client_secret} />
     </div>
   );
 }
+
+const getCartItems = async () => {
+  const supabase = serverClient(cookies);
+  return supabase
+    .from("CartItem")
+    .select(`* , Product (*)`)
+    .order("created_at", { ascending: true });
+};
+
+const getUser = async () => {
+  const supabase = serverClient(cookies);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user;
+};
