@@ -5,6 +5,7 @@ import {
 } from "@nextui-org/react";
 import React, { FC } from "react";
 import { Logo } from "./icons";
+import Link from "next/link";
 
 interface Props {
   isMenuOpen: boolean;
@@ -16,10 +17,12 @@ export const BrandingLogo: FC<Props> = ({ isMenuOpen }) => {
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         className="md:hidden"
       />
-      <NavbarBrand>
-        <Logo />
-        <p className="font-bold text-inherit">ACME</p>
-      </NavbarBrand>
+      <Link href="/">
+        <NavbarBrand>
+          <Logo />
+          <p className="font-bold text-inherit">ACME</p>
+        </NavbarBrand>
+      </Link>
     </NavbarContent>
   );
 };

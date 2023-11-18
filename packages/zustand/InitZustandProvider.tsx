@@ -15,12 +15,9 @@ export const InitZustandProvider = () => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log({ event, session });
-      if (event === "SIGNED_IN") {
-        setUser(session?.user ?? null, false);
-      } else if (event === "SIGNED_OUT") {
+      if (event === "SIGNED_OUT") {
         setUser(null, false);
-      } else if (event === "INITIAL_SESSION") {
+      } else {
         setUser(session?.user ?? null, false);
       }
     });

@@ -1,13 +1,10 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
+import { Database } from "./types/database.types";
 
-export async function signUpUser(
-  email: string,
-  password: string,
-  requestUrl: URL,
-  cookieStore: ReadonlyRequestCookies
-) {
-  const supabase = createServerClient(
+const serverActionClient = (cookie: () => ReadonlyRequestCookies) => {
+  const cookieStore = cookie();
+  return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -24,20 +21,6 @@ export async function signUpUser(
       },
     }
   );
+};
 
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: `${requestUrl.origin}/api/auth/callback`,
-    },
-  });
-
-  if (error?.message) {
-    throw new Error(error.message);
-  }
-  return user;
-}
+export default serverActionClient;
